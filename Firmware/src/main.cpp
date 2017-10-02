@@ -9,12 +9,12 @@
 #define data6 8
 #define ds0   A0
 #define ds1   A1
-#define wr    A4
+#define _wr   A4
 
 void setChar(char digit, char symbol) {
   digitalWrite(ds0, !(digit & 1 << 0));
   digitalWrite(ds1, !(digit & 1 << 1));
-  digitalWrite(wr, LOW);
+  digitalWrite(_wr, LOW);
   digitalWrite(data0, symbol & 1 << 0);
   digitalWrite(data1, symbol & 1 << 1);
   digitalWrite(data2, symbol & 1 << 2);
@@ -22,7 +22,7 @@ void setChar(char digit, char symbol) {
   digitalWrite(data4, symbol & 1 << 4);
   digitalWrite(data5, symbol & 1 << 5);
   digitalWrite(data6, symbol & 1 << 6);
-  digitalWrite(wr, HIGH);
+  digitalWrite(_wr, HIGH);
 }
 
 void setStr(String x) {
@@ -41,18 +41,16 @@ void setup() {
   pinMode(data6, OUTPUT);
   pinMode(ds0,   OUTPUT);
   pinMode(ds1,   OUTPUT);
-  pinMode(wr,    OUTPUT);
+  pinMode(_wr,   OUTPUT);
+  setStr("    ");
 }
 
 void loop() {
-  setStr("This");
-  delay(1000);
-  setStr(" is ");
-  delay(1000);
-  setStr(" a  ");
-  delay(1000);
-  setStr("Test");
-  delay(1000);
-  setStr("    ");
+  for (size_t i = 0; i < 100; i++) {
+    for (size_t j = 0; j < 4; j++) {
+      setChar(j, random(0, 256));
+    }
+    delay(25);
+  }
   delay(1000);
 }
